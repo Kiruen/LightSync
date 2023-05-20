@@ -31,5 +31,5 @@ LightSync 采用 MIT 许可证进行发布。请查阅 LICENSE 文件获取更�
 
 ## 链接
 
-- LightSync GitHub 仓库：[https://github.com/your-repo-url]([https://github.com/your-repo-url](https://github.com/Kiruen/LightSync)
+- LightSync GitHub 仓库：[https://github.com/Kiruen/LightSync](https://github.com/Kiruen/LightSync)
 - Everything 官方网站：[https://www.voidtools.com/zh-cn/](https://www.voidtools.com/zh-cn/)
