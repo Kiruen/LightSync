@@ -33,10 +33,10 @@
                     <ListView x:Name="listViewJobs" ItemsSource="{Binding Source={x:Static local:LSyncJob.Jobs}}" DisplayMemberPath="Key" SelectedValuePath="Value" Margin="22,98,21,45">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Value.Id}" />
-                                <GridViewColumn Header="源路径" DisplayMemberBinding="{Binding Value.Sources, Converter={StaticResource CollectionToStringConverter}}" />
-                                <GridViewColumn Header="目标路径" DisplayMemberBinding="{Binding Value.Dest}" />
-                                <GridViewColumn Header="是否启动" DisplayMemberBinding="{Binding Value.Running}" />
+                                <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Value.Id}" />
+                                <GridViewColumn Header="源路径" Width="Auto" DisplayMemberBinding="{Binding Value.Sources, Converter={StaticResource CollectionToStringConverter}}" />
+                                <GridViewColumn Header="目标路径" Width="Auto" DisplayMemberBinding="{Binding Value.Dest}" />
+                                <GridViewColumn Header="是否启动" Width="Auto" DisplayMemberBinding="{Binding Value.Running}" />
                             </GridView>
                         </ListView.View>
                     </ListView>

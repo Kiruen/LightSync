@@ -49,6 +49,7 @@ namespace LightSync
             hwnd = new WindowInteropHelper(this).Handle;
             hotKeysRegister = new HotKeysRegister(hwnd);
 
+            // 注册快捷键Alt+Shift+S：显示/隐藏主界面
             hotKeysRegister.Register(HKModifiers.Alt | HKModifiers.Shift,
                 KeyInterop.VirtualKeyFromKey(Key.S), () =>
             {
@@ -69,16 +70,9 @@ namespace LightSync
             hwndSource = HwndSource.FromHwnd(hwnd);
             hwndSource.AddHook(new HwndSourceHook(WndProc));
 
-            //listViewJobs.ItemsSource = LSyncJob.Jobs;
+            LSyncJob.LoadJobsFromFile("jobs.json");
         }
 
-
-        private const int WM_HOTKEY = 0x0312;
-        private const int MOD_ALT = 0x0001;
-        private const int MOD_CONTROL = 0x0002;
-        private const int MOD_SHIFT = 0x0004;
-        private const int MOD_WIN = 0x0008;
-        private const int HOTKEY_ID = 9000;
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             const int WM_HOTKEY = 0x0312;
@@ -98,8 +92,10 @@ namespace LightSync
             base.OnClosed(e);
 
             // 解除注册的全局快捷键
-            //UnregisterHotKey(hwnd, HOTKEY_ID);
+            hotKeysRegister.UnRegisterAll();
             hwndSource.RemoveHook(new HwndSourceHook(WndProc));
+
+            LSyncJob.SaveJobsToFile("jobs.json");
         }
 
         private void MoveToScreenCentre()
@@ -134,9 +130,14 @@ namespace LightSync
 
         private void buttonFullVolume_Click(object sender, RoutedEventArgs e)
         {
-            LSyncJob.CompareAndSync(comboBoxSourcePaths.Text, textBoxDest.Text);
-
-            MessageBox.Show("OK");
+            string source = comboBoxSourcePaths.Text;
+            string dest = textBoxDest.Text;
+            Task.Run(() =>
+            {
+                LSyncJob.CompareAndSync(source, dest);
+                MessageBox.Show("全量备份结束");
+            });
+            MessageBox.Show("全量备份开始");
         }
 
         private void buttonBrowseSourcePath_Click(object sender, RoutedEventArgs e)
@@ -178,8 +179,6 @@ namespace LightSync
             LSyncJob.Create(textBoxDest.Text, paths);
 
             comboBoxSourcePaths.Items.Clear();
-            //var view = CollectionViewSource.GetDefaultView(listViewJobs.ItemsSource);
-            //view.Refresh();
         }
 
         private void comboBoxSourcePaths_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -189,7 +188,6 @@ namespace LightSync
                 string path = comboBoxSourcePaths.Text.Trim();
                 if (!string.IsNullOrEmpty(path) && !comboBoxSourcePaths.Items.Contains(path))
                 {
-                    // 向 ComboBox 添加选项
                     comboBoxSourcePaths.Items.Add(path);
                 }
             }

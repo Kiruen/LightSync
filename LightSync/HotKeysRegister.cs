@@ -93,6 +93,15 @@ namespace LightSync
             keys[id].Enabled = false;
         }
 
+        public void UnRegisterAll()
+        {
+            foreach (var key in keys)
+            {
+                UnregisterHotKey(hWnd, key.Key);
+                keys[key.Key].Enabled = false;
+            }
+        }
+
         public bool Process(int msg, IntPtr wParam)
         {
             const int WM_HOTKEY = 0x0312;

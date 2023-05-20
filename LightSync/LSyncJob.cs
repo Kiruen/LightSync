@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,11 +17,7 @@ namespace LightSync
     {
         //public static ObservableCollection<Dictionary<string, LSyncJob>> JobsView = new ObservableCollection<Dictionary<string, LSyncJob>>();
 
-
-        public static ObservableDictionary<string, LSyncJob> Jobs { get; } = new ObservableDictionary<string, LSyncJob>()
-        {
-            { string.Empty, new LSyncJob(string.Empty, string.Empty) }
-        };
+        public static ObservableDictionary<string, LSyncJob> Jobs { get; } = new ObservableDictionary<string, LSyncJob>();
 
         //public static ObservableCollection<KeyValuePair<string, LSyncJob>> Jobs = new ObservableCollection<KeyValuePair<string, LSyncJob>>()
         //{
@@ -34,7 +31,9 @@ namespace LightSync
         public string Dest { get; private set; }
         public string[] Sources { get; private set; }
 
+        [JsonIgnore]
         private bool running;
+        [JsonIgnore]
         public bool Running
         {
             get { return running; }
@@ -48,6 +47,7 @@ namespace LightSync
             }
         }
 
+        [JsonIgnore]
         Dictionary<string, FileSystemWatcher> watchers = new Dictionary<string, FileSystemWatcher>();
 
 
@@ -140,7 +140,7 @@ namespace LightSync
             // 使用 Everything 命令行接口查询源目录下的最新状态
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = @"es\es.exe",
+                FileName = @"..\..\es\es.exe",
                 Arguments = $"-dm -attributes \"{sourcePath}\"",
                 RedirectStandardOutput = true,
                 //es.exe的目录下运行命令行
@@ -292,6 +292,33 @@ namespace LightSync
             HandleFileEvent(Path.GetFileName(e.OldName), e.FullPath, destinationFilePath, isFile: !Directory.Exists(e.FullPath));
         }
 
+
+        public static void SaveJobsToFile(string filePath)
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            string json = JsonConvert.SerializeObject(Jobs, settings);
+            File.WriteAllText(filePath, json);
+        }
+
+        public static void LoadJobsFromFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                Jobs.Clear();
+
+                string json = File.ReadAllText(filePath);
+                var savedJobs = JsonConvert.DeserializeObject<Dictionary<string, LSyncJob>>(json);
+                foreach (var item in savedJobs)
+                {
+                    Jobs.Add(item.Key, item.Value);
+                }
+            }
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
