@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightSync", "LightSync\LightSync.csproj", "{089CBB28-518A-4573-945A-7B0097D14E21}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{089CBB28-518A-4573-945A-7B0097D14E21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{089CBB28-518A-4573-945A-7B0097D14E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{089CBB28-518A-4573-945A-7B0097D14E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{089CBB28-518A-4573-945A-7B0097D14E21}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8400A4C7-18D5-4133-807E-DB47F0B97B72}
+	EndGlobalSection
+EndGlobal
